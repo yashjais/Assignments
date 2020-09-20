@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root')
+         
+        class Shuffler extends React.Component  {
+            constructor() {
+                super()
+                this.state = {
+                    arr: [2,4,3,8,6,5,9,1,7]
+                }
+                this.handleClick = this.handleClick.bind(this)
+            }
+
+            handleClick(){
+                // console.log('working')
+                function shuffle(array) {
+                    return array.sort(() => Math.random() - 0.5);
+                }
+                const arr = shuffle(this.state.arr)
+                // console.log(arr)
+                this.setState({arr})
+            }
+
+            render() {
+                return(
+                    <div>
+                        <h1> Shuffler </h1>
+                        <ul>
+                            {
+                                this.state.arr.map((ele,i) => {
+                                    return <li key={i}> {ele} </li>
+                                })
+                            }
+                        </ul>
+                        <button onClick={this.handleClick}> Shuffle </button>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Shuffler/>, rootHandle)
+
+    </script>
+</body>
+</html>

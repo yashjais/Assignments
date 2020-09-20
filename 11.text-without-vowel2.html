@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "root">
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root')
+
+        class Input extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    inputPage: '',
+                    inputField: ''
+                }
+            }
+
+            handleChange = (e) => {
+                const inputPage = e.target.value
+                const inputField = e.target.value // why is not working if we are managing even tewo states
+                console.log(e.target.value)
+                const length = inputPage.length
+                const char = inputPage[length - 1]
+                const vowels = ['a','e','i','o','u']
+                // const inputField = char
+                console.log(char)
+
+                if(vowels.includes(char)){
+                    this.setState({inputField})
+                }else{
+                    this.setState({inputPage})
+                    this.setState({inputField})
+                }
+            
+                
+
+                // const inputPage = e.target.value
+                // // console.log(e.target.value)
+                // console.log(inputField)
+                // console.log(inputPage)
+                // const length = inputPage.length
+                // const char = inputPage[length - 1]
+                // const vowels = ['a','e','i','o','u']
+                // const inputField = char
+                // // console.log(char)
+                // if(!vowels.includes(char)){
+                //     // console.log('inside' + vowels.includes(char))
+                //     this.setState((prevState) => {
+                //         return {
+                //             inputPage: inputPage,
+                //             inputField: prevState.inputField + char
+                //         }
+                //     })
+                // }else{
+
+                //     e.target.value = inputPage.slice(0,length-1) + ""
+                //     this.setState((prevState) => {
+                //         return {
+                //             inputField: prevState.inputField + char
+                //         }
+                //     })
+                // }     
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h1> Text Without Vowels </h1>
+                        <h2> {this.state.inputPage} </h2>
+                        <form>
+                            <label>
+                                <input type="text" value={this.state.inputField} onChange={this.handleChange}/>
+                            </label>
+                        </form>
+                    </div>
+                )
+            }
+        } 
+        ReactDOM.render(<Input/>, rootHandle)
+    </script>
+</body>
+</html>

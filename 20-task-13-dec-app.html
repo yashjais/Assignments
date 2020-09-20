@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Department App</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script src="../js/axios.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root') 
+
+        class App extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    users: [],
+                    usersTemp: [],
+                    user: [],
+                    departments: ['Hr','Engg']
+                }
+                this.handleChange = this.handleChange.bind(this)
+                this.handleDepartmentChange = this.handleDepartmentChange.bind(this)
+                this.handleButtonChange = this.handleButtonChange.bind(this)
+                this.handleClearChange = this.handleClearChange.bind(this)
+            }
+            handleClearChange(){
+                this.setState({
+                    usersTemp:[],
+                    users: {},
+                    department: 'Department'
+                })
+            }
+            handleButtonChange(){
+                this.setState({})
+                // why only this.render() not working here // we can't di it
+                // and also why conditional rendering is not working here(in render method - Object.entries.(obj).length)
+            }
+            handleChange(e) {
+                const id = e.target.value
+                let user = this.state.users.find(user => user.id == id)
+                user = [user]                
+                console.log(user,'inside handle')
+                // this.setState({user})
+                this.state.user = user
+            }
+            handleDepartmentChange(e){
+                console.log(e.target.value)
+                const department = e.target.value
+                let usersTemp
+                if(department == 'Hr'){
+                    usersTemp = this.state.users.filter(user => user.id < 7)
+                }else{
+                    usersTemp = this.state.users.filter(user => user.id > 6)
+                }
+                this.setState({usersTemp})
+            }
+            componentDidMount() {
+                axios.get('https://reqres.in/api/users')
+                    .then(response => {
+                        // console.log(response.data)
+                        const users = response.data.data
+                        this.setState({users})
+                })
+
+                axios.get('https://reqres.in/api/users?page=2')
+                    .then(response => {
+                        // console.log(response.data)
+                        const users = response.data.data
+                        this.setState((prevState => {
+                            return {
+                                users: [].concat(...prevState.users,...users)
+                            }
+                        }))
+                })
+            }
+            render() {
+                // console.log(this.state)
+                console.log('inside render',this.state.user)
+                return (
+                    <div style={{textAlign: "center"}}> 
+                        <h1> App </h1>
+                        <br/>
+                        <table  style={{ textAlign:"center",margin: "0 auto"}} border='1'>
+                            <thead>
+                                <tr>
+                                <th> Department </th>
+                                <th> Employees </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td>HR</td>
+                                <td>1, 2, 3, 4, 5, 6</td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                <td>Engg</td>
+                                <td>7, 8, 9, 10, 11, 12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <select onChange={this.handleDepartmentChange}>
+                            <option value=''>Department</option>
+                            {
+                                this.state.departments.map((department,index) => {
+                                    return (
+                                        <option key={index}> {department} </option>
+                                    )
+                                })
+                            }
+                        </select>
+                        <select onChange={this.handleChange}>
+                            <option value=''>Employees</option>
+                            {
+                                this.state.usersTemp.map(user => {
+                                    return (
+                                        <option key={user.id}>{user.id}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                        <br/>
+                        <br/>
+                        <button onClick={this.handleButtonChange}>GetDetails</button>
+                        <button onClick={this.handleClearChange}>Clear</button>
+
+                        <br/>
+
+                        {
+                            this.state.user.map(user => {
+                                return <div key={user.id}> <User data={user}/> </div>
+                            })
+                        }
+                        
+                    </div>
+                )
+            }
+        }
+
+        function User(props) {
+            console.log('inside fucn',props.data)
+            return (
+                <div>
+                    <br/>
+                    <h1>User Details:</h1>
+                    <br/>
+                    <img src={props.data.avatar} style={{marginCenter: 500 + 'em'}} />
+                    <br/>
+                    <br/>
+                    <h4> Id: {props.data.id}        Name: {`${props.data.first_name} ${props.data.last_name}`} </h4>   
+                </div>
+            )
+        }
+
+        ReactDOM.render(<App /> , rootHandle)
+    </script>
+</body>
+</html>

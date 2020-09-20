@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root')
+
+        class Bill extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    isVodafone: false,
+                    isAirtel: false,
+                    isJio: true,
+                    input: ''
+                }
+            }
+
+            handleVodaChange = () => {
+                // no need of returning a function and then in that function to change the values based on prevstate
+                this.setState({
+                    isVodafone: true,
+                    isAirtel: false,
+                    isJio: false,
+                    input: ''
+                })
+            }
+
+            handleAirChange = () => {
+                this.setState({
+                    isVodafone: false,
+                    isAirtel: true,
+                    isJio: false,
+                    input: ''
+                })
+            }
+
+            handleJioChange = () => {
+                this.setState({
+                    isVodafone: false,
+                    isAirtel: false,
+                    isJio: true,
+                    input: ''
+                })
+            }
+
+            handleInputChange = (e) => {
+                const input = e.target.value
+                this.setState({input})
+            }
+
+            render() {
+                return(
+                    <div>
+                        <h2> Pay bill for { (Object.entries(this.state).find(ele => ele[1] == true))[0].slice(2) } </h2>
+                        <hr />
+                        <label>
+                            <input name="radio" type="radio" value = "Vodafone" onChange = {this.handleVodaChange} checked = {this.state.isVodafone} />
+                            Vodafone  
+                        </label>
+                        <label>
+                            <input name="radio" type="radio" value = "airter" onChange = {this.handleAirChange} checked = {this.state.isAirtel} />
+                            Airtel  
+                        </label>
+                        <label>
+                            <input name="radio" type="radio" value = "jio" onChange = {this.handleJioChange} checked = {this.state.isJio} />
+                            Jio  
+                        </label>
+                        <br/>
+                        <br/>
+                        <label>
+                            <input type="text" value={this.state.input} placeholder={`Enter Your ${(Object.entries(this.state).find(ele => ele[1] == true))[0].slice(2)} Number`} onChange={this.handleInputChange}/>
+                        </label>
+                    </div>
+                )
+            }
+        } 
+        ReactDOM.render(<Bill/>, rootHandle)
+    </script>
+</body>
+</html>

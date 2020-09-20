@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Department App</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script src="../js/axios.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root') 
+
+        class App extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    users: [],
+                    posts: [],
+                    post: {}
+                }
+            }
+            componentDidMount() {
+                axios.get('http://jsonplaceholder.typicode.com/users')
+                    .then((response) => {
+                        const users = response.data
+                        const posts = []
+                        this.setState({users, posts})
+                    })
+                    .catch(err => {
+                        alert(err)
+                    })
+                
+            }
+
+            handleUserChange = (e) => {
+                // console.log(e.target.value)
+                const id = e.target.value
+                axios.get(`http://jsonplaceholder.typicode.com/posts?userId=${id}`)
+                    .then((response) => {
+                        const posts = response.data
+                        const post = {}
+                        this.setState({posts, post})
+                    })
+            }
+
+            handlePostChange = (e) => {
+                // console.log(e.target.value)
+                const id = e.target.value
+                const post = this.state.posts.find(post => post.id == id)
+                this.setState({post})
+            } 
+
+            render() {
+                // console.log(this.state.post)
+                // console.log(this.state.post.body)
+                return(
+                    <div>
+                        <h1> App </h1>
+
+                        <h3> Select User </h3>
+                        <select onChange={this.handleUserChange}>
+                            <option value=""> select </option>
+                                {
+                                    this.state.users.map(function(user){
+                                        return (  
+                                            <option key={user.id} value={user.id}> {user.name} </option>
+                                        )
+                                    })
+                                }
+                        </select>
+
+                        <h3> Select posts </h3>
+                        <select onChange={this.handlePostChange}>
+                            <option value=""> select </option>
+                                {
+                                    this.state.posts.map(function(post){
+                                        return (  
+                                            <option key={post.id} value={post.id}> {post.body} </option>
+                                        )
+                                    })
+                                }
+                        </select>
+
+                        <h3> {this.state.post.body} </h3>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, rootHandle)
+    </script>
+</body>
+</html>

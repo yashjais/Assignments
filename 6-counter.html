@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root') 
+        
+        class Counter extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    count: 10,
+                    value: null
+                }
+                this.state.value = setInterval(() => {
+                    console.log('happy')
+                    if(this.state.count !=0 ){
+                        this.setState((prevState)=>{
+                            return {
+                                count: prevState.count - 1
+                            }
+                        })
+                    }else{
+                        clearInterval(this.state.value)
+                    }
+                },1000)
+            }
+            /*
+            minus() {
+                /*setInterval(() => {
+                    if(this.state.count != 0 ){
+                        this.state.count--
+                        // console.log(this.state.count)
+                        this.setState(function(prevState){
+                        return (
+                                {
+                                    count: prevState.count - 1,
+                                    // value: prevState.value
+                                }
+                            )
+                        })
+                    }
+                }, 1000)
+                */
+                /*
+                this.setState(function(prevState){
+                    return (
+                        {
+                            count: prevState.count - 1,
+                            // value: prevState.value
+                        }
+                    )
+                })
+                ///
+            }
+            */
+
+            render() {
+                return (
+                    <div>
+                        <h1> { this.state.count } </h1>
+                        {
+                            // this.minus()
+                                    /*
+                                    setInterval(() => {
+                                    if(this.state.count != 0 ){
+                                        // this.state.count--
+                                        // console.log(this.state.count)
+                                        this.minus()
+                                    }
+                                }, 1000)
+                                */
+                        }
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Counter />, rootHandle)
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>App</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script src="../js/axios.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root') 
+
+        class Swiggy extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    items : [
+                    {name: 'Icecream', id: 1, value: 0, price: 30},
+                    {name: 'Sweet', id: 2, value: 0 , price: 20},
+                    {name: 'Fruit', id: 3, value: 0 , price: 40},
+                    {name: 'cart', id: 4, value: 0, price:}
+                    ]
+                }
+                // this.handlePlusIceClick = this.handlePlusIceClick.bind(this)
+                // this.handleMinusIceClick = this.handleMinusIceClick.bind(this)
+                // this.handlePlusSweClick = this.handlePlusSweClick.bind(this)
+                // this.handleMinusSweClick = this.handleMinusSweClick.bind(this)
+            }
+
+            // handlePlusIceClick(e) {
+            //     console.log(e.target.value, e.target.name)
+                
+            //     this.setState((prevState) => {
+            //         return ({
+            //             icecream: prevState.icecream + 1
+            //         })
+            //     })
+            // }
+
+            // handleMinusIceClick(e){
+            //     this.setState((prevState) => {
+            //         return ({
+            //             icecream: prevState.icecream - 1
+            //         })
+            //     })
+            // }
+
+            // handlePlusSweClick(){
+            //     this.setState((prevState) => {
+            //         return ({
+            //             sweet: prevState.sweet + 1
+            //         })
+            //     })
+            // }
+
+            // handleMinusSweClick(){
+            //     this.setState((prevState) => {
+            //         return({
+            //             sweet: prevState.sweet - 1
+            //         })
+            //     })
+            // }
+
+            render() {
+                return(
+                    <div>
+                        <ul>
+                            {
+                                this.state.map((item) => {
+                                    return (
+                                        <div key={item.id}>
+                                            <h1> { item.name }  </h1>
+                                            <h3> Price - { item.price } </h3>
+                                        </div>
+                                    ) 
+                                })
+                            }
+                        </ul>
+                        
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(<Swiggy />, rootHandle)
+    </script>
+</body>
+</html>

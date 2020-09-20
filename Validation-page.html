@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Validation</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script src="../js/axios.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root')
+        class Validation extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    email: '',
+                    password: '',
+                    errors: []
+                }
+            }
+            handleSubmit = (e) => {
+                console.log(e)
+                this.state.errors = []
+                // console.log(this.state.errors)
+                e.preventDefault()
+                const errors = []
+                if(this.state.email.length == 0){
+                    errors.push('Invalid Email')
+                }
+                if(!this.state.email.split('').find(ele => ele == '@')){
+                    errors.push('email should contain @')
+                }
+                if(this.state.password.length < 6){
+                    errors.push('password should contain minimum 6 character')
+                }
+                if(!this.state.password.split('').find(ele => ele == ele.toUpperCase())){
+                    errors.push('password should contain a Upper Case character')
+                }
+                
+                this.setState({
+                    email: '',
+                    password: '',
+                    errors
+                })
+            }
+            handleChange = (e) => {
+                // console.log(e.target.value, e.target.name)
+                this.setState({[e.target.name]:e.target.value})
+            }
+            render() {
+                return (
+                    <div>
+                        <h1>Sign Up</h1>
+                        <form onSubmit={this.handleSubmit}>
+                            <label>
+                                Email
+                                <input type="text" name="email" value={this.state.email} onChange={this.handleChange} />
+                            </label>
+                            <br />
+                            <label>
+                                Password
+                                <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                            </label> 
+                            <br />
+                                <input type="submit" onChange={this.handleSubmit} />
+                                {<Error errors={this.state.errors}/>}
+                        </form>
+                    </div>
+                )
+            }
+        }
+        function Error(props) {
+            console.log(props)
+            return (
+                <div>
+                    {
+                        props.errors[0]
+                    }
+                </div>
+            )
+        }
+
+        ReactDOM.render(<Validation />, rootHandle)
+    </script>
+</body>
+</html>

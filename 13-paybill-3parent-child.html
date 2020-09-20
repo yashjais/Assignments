@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root')
+
+        class Bill extends React.Component {
+            constructor() {
+                super()
+                this.state = {
+                    operator: ['vodafone', 'airtel', 'jio'],
+                    selected: '',
+                    input: ''
+                }
+            }
+
+            handleOperatorChange = (e) => {
+                const operator = e.target.value 
+                this.setState({
+                    selected: operator,
+                    input: ''
+                })
+            }
+
+            handleInputChange = (e) => {
+                const input = e.target.value
+                this.setState({input})
+            }
+
+            componentDidMount() {
+                this.setState({selected: 'Airtel'})
+            }
+
+            render() {
+                return(
+                   <Operator state={this.state} name={this.state.operator} value={this.state.operator} handleChange={this.handleOperatorChange} handleInputChange={this.handleInputChange}/>
+                )
+            }
+        } 
+
+        function Operator (props) {
+            return (
+                <div>
+                    <h2> Pay bill for { props.state.selected } </h2>
+                    {
+                        props.name.map((op, index) => {
+                            return(
+                                <div key={index}>
+                                    
+                                    <hr />
+                                    <label>
+                                        <input name={op}
+                                        type="radio" 
+                                        value = {op}
+                                        name = "radio" 
+                                        onChange = {props.handleChange} />
+                                        { op }  
+                                    </label>
+                                    <br/>
+                                    <br/>
+                                </div>
+                            )
+                        })
+                    }
+                    <label>
+                        <input type="text" 
+                        value={props.state.input} 
+                        placeholder={`Enter Your ${props.state.selected}`} 
+                        onChange={props.handleInputChange}/>
+                    </label>
+                </div>
+            )
+        }
+        ReactDOM.render(<Bill/>, rootHandle)
+    </script>
+</body>
+</html>

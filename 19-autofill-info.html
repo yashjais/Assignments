@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Autofill</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+    <script src="../js/axios.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root') 
+
+        class Autofill extends React.Component {
+            constructor() {
+                super() 
+                this.state = {
+                    userName: '',
+                    email: '',
+                    name: '',
+                    users: []
+                }
+                this.handleChange = this.handleChange.bind(this)
+                this.handleSubmit = this.handleSubmit.bind(this)
+            }
+
+            handleChange(e) {
+                const value = e.target.value
+                let searchUser
+                if(e.target.name == 'userName'){
+                    searchUser = this.state.users.find(user => user.username == value)
+                    if(searchUser){
+                        const email = searchUser.email
+                        const name = searchUser.name
+                        this.setState({email,name})
+                    }
+                }
+                this.setState({[e.target.name]: e.target.value})
+            }
+
+            handleSubmit(e) {
+                e.preventDefault()
+                console.log(e)
+                console.log('submit')
+            }
+
+            componentDidMount() {
+                axios.get('http://jsonplaceholder.typicode.com/users')
+                    .then(response => {
+                        const users = response.data
+                        this.setState({users})
+                    })
+            }
+
+            render() {
+                console.log(this.state.users)
+                return (
+                    <div>
+                        <h2> Autofill </h2>
+                        <form onSubmit={this.handleSubmit}>
+                            <label>
+                                UserName
+                                <input type="text" name="userName" value={this.state.userName} onChange={this.handleChange} />
+                            </label>
+                            <br/>
+                            <label>
+                                Email
+                                <input type="text" name="email" value={this.state.email} onChange={this.handleChange} />
+                            </label>
+                            <br/>
+                            <label>
+                                Name
+                                <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
+                            </label>
+                            <br/>
+                            <input type="submit"/>
+                        </form>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Autofill />, rootHandle)
+    </script>
+</body>
+</html>

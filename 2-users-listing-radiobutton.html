@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Radiobutton</title>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script src="./../js/react.development.js"></script>
+    <script src="./../js/react-dom.development.js"></script>
+    <script src="./../js/babel.js"></script>
+    <script type="text/babel">
+        const rootHandle = document.getElementById('root')
+        const users = [
+            {id: 1, name: 'yash', email: 'yash@gmail.com'},
+            {id: 2, name: 'yashika', email: 'yashika@gmail.com'},
+            {id: 3, name: 'yashasvi', email: 'yashasvi@gmail.com'}
+        ]
+
+        function UsersList(props){
+            function handleChange(e){
+                
+                alert(`${e.target.value}`)
+            }
+        
+            return(
+                <div>
+                <h2> Users: { props.obj.length } </h2>
+                    {
+                        props.obj.map(function(user){
+                            return (
+                                <p key={user.id}> 
+                                    <label>
+                                    <input type="radio"
+                                        key={user.id}
+                                        name = {'radio'}
+                                        value={ user.name }
+                                        onChange = { handleChange }
+                                        selected = {true} /> {user.name} </label> 
+                                        <br/>
+                                </p>
+                            )
+                        })
+                    }
+                </div>
+            )
+        }
+        const ele = (
+            <UsersList obj={users}/>
+        )
+
+        ReactDOM.render(ele, rootHandle)
+
+    </script>
+</body>
+</html>
